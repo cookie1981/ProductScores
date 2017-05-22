@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using api.DatabaseProviders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -17,6 +18,10 @@ namespace api.Models
         public string Team { get; set; }
         [BsonElement("SDET")]
         public string Sdet { get; set; }
+
+        [BsonDateTimeOptions]
+        [BsonElement("lastUpdated")]
+        public DateTime LastUpdated { get; set; }
 
         [BsonElement("immuneSystem")]
         public ImmuneSystem ImmuneSystem { get; set; }

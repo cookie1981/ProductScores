@@ -19,6 +19,7 @@
         <th>Tech Debt</th>
         <th>Security</th>
         <th>Performance</th>
+        <th>Last Updated</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
@@ -38,6 +39,7 @@
             <td>@score.CategoryScore(Constants.TECH_DEBT)</td>
             <td>@score.CategoryScore(Constants.SECURITY)</td>
             <td>@score.CategoryScore(Constants.PERFORMANCE)</td>
+            <td>@score.LastUpdatedOrDefault</td>
             <td>@*Html.ActionLink("View Details", "Index", "Details", new { id = score.Id }, null)*@</td>
             <td>@Html.ActionLink("Edit", "Index", "Edit", new { id = score.Id }, null)</td>
             <td>@Html.ActionLink("Delete", "Index", "Delete", new { id = score.Id, productName = score.Product }, null)</td>

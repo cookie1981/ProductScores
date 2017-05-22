@@ -8,6 +8,14 @@ namespace ProductImmuneSystemScores.Controllers
 {
     public class DeleteController : Controller
     {
+        private readonly ProductScoreApiWrapper _productScoreApiWrapper;
+
+        public DeleteController(IProductScoresApiConfig productScoresApiConfig)
+        {
+            //TODO: I'm still not happy with creating a new HTTPCLient all the time
+            _productScoreApiWrapper = new ProductScoreApiWrapper(new HttpClient(), productScoresApiConfig);
+        }
+
         public ActionResult Index(string id, string productName)
         {
             //TODO Validate incoming params
@@ -20,10 +28,7 @@ namespace ProductImmuneSystemScores.Controllers
 
         public async Task<ActionResult> Confirm(string id)
         {
-            ProductScoreApiSection config = (ProductScoreApiSection)System.Configuration.ConfigurationManager.GetSection("ProductScoreApiGroup/ProductScoreApiConfiguration");
-
-            //TODO: Sort this out
-            var response = await new ProductScoreApiWrapper(new HttpClient(), config).DeleteProduct(id);
+            var response = await _productScoreApiWrapper.DeleteProduct(id);
 
             if (!response.IsSuccessStatusCode)
                 return View("~/Views/Delete/Error.cshtml");

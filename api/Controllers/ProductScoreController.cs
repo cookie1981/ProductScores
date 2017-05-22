@@ -89,6 +89,7 @@ namespace api.Controllers
 
             try
             {
+                productScore.LastUpdated = DateTime.UtcNow;
                 var insertOccured = await ProductStoreRepository.InsertAsync(productScore).ConfigureAwait(false);
 
                 if (!insertOccured || string.IsNullOrEmpty(productScore.Id.ToString() ))
@@ -115,6 +116,7 @@ namespace api.Controllers
                 if (!ValidProductScore(productScore))
                     return BadRequest("Supplied productScore is Invalid.");
 
+                productScore.LastUpdated = DateTime.UtcNow;
                 var updateOccured = await ProductStoreRepository.UpdateAsync(productScore).ConfigureAwait(false);
 
                 if (updateOccured)
@@ -151,7 +153,6 @@ namespace api.Controllers
                 return InternalServerError();
             }
         }
-
 
         private bool ValidProductScore(ProductScore productScore)
         {
