@@ -1,0 +1,190 @@
+﻿@using ProductImmuneSystemScores.Models
+@model  ProductScoresViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Immune System Scores</h2>
+
+<table style="border-width: 1px; border-color: black; border-style: solid;">
+    <thead style="border-width: 1px; border-color: black; border-style: solid;">
+    <tr>
+        <th>Product</th>
+        <th>Team</th>
+        <th>SDET</th>
+        <th>Automation</th>
+        <th>X-Browser</th>
+        <th>Monitoring/Alerting</th>
+        <th>Release</th>
+        <th>Tech Debt</th>
+        <th>Security</th>
+        <th>Performance</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody id="ProductScores">
+    @foreach (var score in @Model.Scores)
+    {
+        <tr>
+            <td>@score.Product</td>
+            <td>@score.Team</td>
+            <td>@score.Sdet</td>
+            <td>@score.CategoryScore(Constants.AUTOMATION)</td>
+            <td>@score.CategoryScore(Constants.CROSSBROWSER)</td>
+            <td>@score.CategoryScore(Constants.MONITORING_AND_ALERTING)</td>
+            <td>@score.CategoryScore(Constants.RELEASE)</td>
+            <td>@score.CategoryScore(Constants.TECH_DEBT)</td>
+            <td>@score.CategoryScore(Constants.SECURITY)</td>
+            <td>@score.CategoryScore(Constants.PERFORMANCE)</td>
+            <td>@*Html.ActionLink("View Details", "Index", "Details", new { id = score.Id }, null)*@</td>
+            <td>@Html.ActionLink("Edit", "Index", "Edit", new { id = score.Id }, null)</td>
+            <td>@Html.ActionLink("Delete", "Index", "Delete", new { id = score.Id, productName = score.Product }, null)</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<br/>
+
+<form id="userData">
+    <input type="text" name="userName" placeholder="Name" value="Dave" />
+    <input type="password" name="password" placeholder="Password" value="password" />
+    <input type="submit" id="login" value="Login" />
+</form>
+
+<button id="getScores">Get Scores</button>
+
+<pre id="output"></pre>
+
+<script>
+
+        $(function () {
+            var showResponse = function (object) {
+
+                $("#output").text(JSON.stringify(object, null, 4));
+
+            };
+            
+            var saveAccessToken = function (data) {
+                accessToken = data.access_token;
+            };
+
+            var login = function () {
+                var url = "http://localhost:8080/Token";
+                var data = $("#userData").serialize();
+                data = data + "&grant_type=password";
+                $.post(url, data)
+                 .success(saveAccessToken)
+                 .always(showResponse);
+
+                return false;
+            };
+
+            var getHeaders = function () {
+                if (accessToken) {
+                    return { "Authorization": "Bearer " + accessToken, "X-Requested-With": "XMLHttpRequest" };
+                }
+            };
+
+            var getScores = function() {
+                var url = "http://localhost:8080/api/ProductScores";
+                $.ajax({
+                    url  : url,
+                    type: "GET",
+                    headers: getHeaders(),
+//                    dataType: "text",
+                    success: function (a, b, c) {
+//                        alert("success");
+                    },
+                    error: function (x, y, z) {
+//                        alert("fail");
+                    }
+                }).always(showResponse);
+            
+                return false;
+            };
+
+            var accessToken = "";
+
+            $("#login").click(login);
+            $("#getScores").click(getScores);
+
+        });
+
+</script>
+
+@*    $( document ).ready(function() {*@
+@*        GetProductScores();*@
+@*    });*@
+@**@
+@*    function findScoreByCategory(array, category) {*@
+@**@
+@*        var matchingItems = $.grep(array, function (x, index) {*@
+@*                                    return (x.Category == category);*@
+@*                                });*@
+@**@
+@*        if (matchingItems.length === 0)*@
+@*            return "-";*@
+@*        else*@
+@*            return matchingItems[0].Grade;*@
+@*    };*@
+@*    *@
+@*//    function deleteProduct(productId) {*@
+@*//        //are you sure?*@
+@*//        $.ajax({*@
+@*//            url: 'http://localhost:8080/api/ProductScoresViewModel/' + productId,*@
+@*//            type: 'DELETE',*@
+@*//            success: function (data, status, xhr) {*@
+@*//                //alert("success");*@
+@*//                //TODO!*@
+@*//                //window.location.replace("http://localhost:54597/");*@
+@*//            },*@
+@*//            error: function (xhr, status, error) {*@
+@*////                alert("fail");*@
+@*//                //TODO!*@
+@*//            }*@
+@*//        });*@
+@*//    };*@
+@**@
+@*    function GetProductScores() {*@
+@*        $.ajax({*@
+@*            url: 'http://localhost:8080/api/ProductScoresViewModel/',*@
+@*            dataType: 'json',*@
+@*            success : function(data, status, xhr) {*@
+@*                *@
+@*                var rows = "";*@
+@*                *@
+@*                $.each(data, function () {*@
+@**@
+@*                    rows += "<tr style='border-width: 1px; border-color: black; border-style: solid;'>";*@
+@*                    rows += "<td>" + this.Product + "</td>";*@
+@*                    rows += "<td>" + this.Team + "</td>";*@
+@*                    rows += "<td>" + this.SDET + "</td>";*@
+@*                    rows += "<td>" + findScoreByCategory(this.ImmuneSystem.Scores, "automation") + "</td>";*@
+@*                    rows += "<td>" + findScoreByCategory(this.ImmuneSystem.Scores, "x-browser") + "</td>";*@
+@*                    rows += "<td>" + findScoreByCategory(this.ImmuneSystem.Scores, "monitoring") + "</td>";*@
+@*                    rows += "<td>" + findScoreByCategory(this.ImmuneSystem.Scores, "release") + "</td>";*@
+@*                    rows += "<td>" + findScoreByCategory(this.ImmuneSystem.Scores, "techdebt") + "</td>";*@
+@*                    rows += "<td>" + findScoreByCategory(this.ImmuneSystem.Scores, "security") + "</td>";*@
+@*                    rows += "<td>" + findScoreByCategory(this.ImmuneSystem.Scores, "performance") + "</td>";*@
+@*                    rows += "<td><a href='/Details/" + this.Id + "' >View Detail</a></td>";*@
+@*                    rows += "<td><a href='/Edit/Index/" + this.Id + "' >Edit</a></td>";*@
+@*                    rows += "<td><a href='/Delete?id=" + this.Id + "&productName=" + this.Product + "' >Delete</a></td>";*@
+@**@
+@*//                     rows += "<td><input type=\"button\" value=\"Delete\" onclick=\"deleteProduct('" + this.Id + "');\" /></td>";*@
+@*                    rows += "</tr>";*@
+@*                });*@
+@**@
+@*                $("#ProductScores").append(rows);*@
+@*                *@
+@*                //is status always 200 breakInside success?*@
+@*            },*@
+@*            error : function(xhr, status, error) {*@
+@*                //TODO!*@
+@*            }*@
+@*        });*@
+@**@
+@*    };*@
+@*</script>*@

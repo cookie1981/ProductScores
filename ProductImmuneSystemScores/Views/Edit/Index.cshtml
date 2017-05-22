@@ -1,0 +1,153 @@
+﻿@model ProductImmuneSystemScores.Models.ProductScoreViewModel
+
+<style>
+/*    .success-{*/
+/*        display:none;*/
+/*    }*/
+/*    .failed-{*/
+/*        display:none;*/
+/*    }*/
+    .success-True {
+        display:block;
+    }
+    .success-False {
+        display:none;
+    }
+    .failed-True {
+        display:block;
+    }
+    .failed-False{
+        display:none;
+    }
+
+</style>
+
+<h2>Edit</h2>
+
+<form action="index" id="CreateNewProductScore" method="post">
+    @Html.HiddenFor(x => x.Id)
+
+    @Html.LabelFor(x => x.Product, "Product Name")
+    @Html.TextBoxFor(x => x.Product, @Model.Product)
+    <br />
+    @Html.LabelFor(x => x.SelectedTeam, "Team Responsible:")
+    @Html.DropDownListFor(x => x.SelectedTeam, Model.TeamOptions)
+    <br />
+    @Html.LabelFor(x => x.SDET, "SDET")
+    @Html.TextBoxFor(x => x.SDET, @Model.SDET)
+    <br />
+    <p>Scores:</p>
+    @Html.Label("AutomationScore", "Automation:")
+    @Html.DropDownListFor(x => x.SelectedAutomationScore, Model.AutomationScoreOptions)
+
+    @Html.Label("CrossBrowserScore", "X-Browser Testing:")
+    @Html.DropDownListFor(x => x.SelectedCrossBrowserScore, Model.CrossBrowserScoreOptions)
+
+    @Html.Label("MonitoringScore", "Monitoring & Alerting:")
+    @Html.DropDownListFor(x => x.SelectedMonitoringScore, Model.MonitoringScoreOptions)
+
+    @Html.Label("ReleaseScore", "Release:")
+    @Html.DropDownListFor(x => x.SelectedReleaseScore, Model.ReleaseScoreOptions)
+
+    @Html.Label("TechDebtScore", "Tech Debt:")
+    @Html.DropDownListFor(x => x.SelectedTechDebtScore, Model.TechDebtScoreOptions)
+
+    @Html.Label("SecurityScore", "Security:")
+    @Html.DropDownListFor(x => x.SelectedSecurityScore, Model.SecurityScoreOptions)
+
+    @Html.Label("PerformanceScore", "Performance:")
+    @Html.DropDownListFor(x => x.SelectedPerformanceScore, Model.PerformanceScoreOptions)
+
+    <br />
+    <input type="submit" id="submit" value="Save" />
+    
+    <div id="Errors" hidden="@(!Model.DisplayValidationErrors)">
+        @Html.ValidationSummary(false)
+
+        <div id="save-successful" class="success-@Model.SaveSucceeded.ToString()">
+            Save Successful.
+        </div>
+        <div id="save-failed" class="failed-@Model.SaveFailed.ToString()">
+            Sorry, that didn't work!
+        </div>
+    </div>
+</form>
+
+@*<script>
+    $(document).ready(function(){
+        $('#submit').click(function () {
+            //assume this is a new score we are creating for now (Edit to come later)
+            //no client side validation just yet
+                        
+            CreateNewScore(BuildJsonForNewProductScore());
+            
+        });
+    });
+
+    function CreateNewScore(productJson) {
+        $.ajax({
+            url: 'http://localhost:8080/api/ProductScores/',
+            type: 'POST',
+            data: productJson,
+            success: function (data, status, xhr) {
+//                alert(status);
+            },
+            error: function (error, xrh, something) {
+//                alert("Fail!");
+            }            
+        });
+    }
+
+    function BuildJsonForNewProductScore() {
+        var product = $('#Product').val();
+        var team = $('#Team').val();
+        var SDET = $('#SDET').val();
+        var automationScore = $('#AutomationScore').val();
+        var xBrowserScore = $('#CrossBrowserScore').val();
+        var monitoringScore = $('#MonitoringScore').val();
+        var releaseScore = $('#ReleaseScore').val();
+        var secScore = $('#SecurityScore').val();
+        var tDebtScore = $('#TechDebtScore').val();
+        var perfScore = $('#PerformanceScore').val();
+
+        var json = {
+            "product": product,
+            "team": team,
+            "SDET": SDET,
+            "immuneSystem": {
+                "scores": [
+                    {
+                        "category": "automation",
+                        "grade": automationScore
+                    },
+                    {
+                        "category": "x-browser",
+                        "grade": xBrowserScore
+                    },
+                    {
+                        "category": "monitoring-and-alerting",
+                        "grade": monitoringScore
+                    },
+                    {
+                        "category": "release",
+                        "grade": releaseScore
+                    },
+                    {
+                        "category": "tech-debt",
+                        "grade": tDebtScore
+                    },
+                    {
+                        "category": "security",
+                        "grade": secScore
+                    },
+                    {
+                        "category": "performance",
+                        "grade": perfScore
+                    },
+                ]
+            }
+        };
+
+        return json;
+    }
+</script>*@

@@ -1,0 +1,13 @@
+﻿@model ProductImmuneSystemScores.Models.DeleteProductScoreViewModel
+@{
+    ViewBag.Title = "Delete Product Scores";
+}
+
+<p>Are you sure you want to delete Immune System Scores for Product: '@Model.ProductName'</p>
+
+@using (Html.BeginForm("Confirm", "Delete", FormMethod.Post))
+{
+    @Html.Hidden("id", @Model.Id);
+    <input type="submit" value="Confirm" />
+}
+@Html.ActionLink("Cancel", "Index", "Home")

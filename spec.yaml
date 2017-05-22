@@ -1,0 +1,43 @@
+swagger: '2.0'
+info:
+  title: Product Immune System Service
+  description: Provides CRUD functionality for a Team/Product Immunisation Scores @ CTM.
+  version: "1.0.0"
+  contact: David Cook
+    name: David Cook
+    url: 
+    email: david.cook@bglgroup.co.uk
+# the domain of the service
+host: TBD
+# array of all schemes that your API supports
+schemes:
+  - http
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /api/ProductScores:
+    get:
+      summary: returns Immune system scores for all products 
+      description: returns Immune system scores for all products.
+      parameters:
+        
+      security:
+        #- bearer:
+         # - riskcapture
+      responses:
+        200:
+          description: (Ok) Immune system scores have been found and retrieved from datastore
+          headers:
+          schema:
+    #        $ref: '#/definitions/ValidationResponse'
+          examples:
+             {
+				application/json: [{"Id": "590b50f8de13257f88ae8a8b","Products": ["travel"],"Team": "mob","SDET": "terry","ImmuneSystem": {"Scores": [{"Category": "automation","Grade": 3},{"Category": "x-browser","Grade": 3}]}}]
+             }
+        500:
+          description: (InternalServerError) something went wrong attempting to bring back results
+ 
